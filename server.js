@@ -42,7 +42,24 @@ app.get('/todos',function(req,res){
 
 app.get('/todos/:id', function(req,res){
 	var todoID= parseInt(req.params.id,10);
-	var matchdedtodo= _.findWhere(todos,{id: todoID}); //underscore library
+
+
+
+	db.todo.findById(todoID).then(function(todo){
+		if(!!todo){
+		res.json(todo.toJSON());
+		}
+		else{
+			res.status(404).send();
+		}
+		
+	},function(e){
+		return res.status(500).json(e);
+
+
+	});
+
+	//var matchdedtodo= _.findWhere(todos,{id: todoID}); //underscore library
 	//var matchdedtodo;
 	//res.send('Asking for todo with id of:'+req.params.id);
 	//res.send(todos.length);
@@ -56,14 +73,14 @@ app.get('/todos/:id', function(req,res){
 			
 	// });
 
-	if(matchdedtodo){
+	// if(matchdedtodo){
 
-		res.json(matchdedtodo);
+	// 	res.json(matchdedtodo);
 
-	}
-	else{
-		res.status(404).send();
-	}
+	// }
+	// else{
+	// 	res.status(404).send();
+	// }
 	
 
 });
