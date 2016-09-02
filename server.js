@@ -205,7 +205,7 @@ app.put('/todos/:id', function(req,res){
 	var attributes={};
 	var todoID= parseInt(req.params.id,10);
 	
-	console.log(typeof(body.completed));
+	//console.log(typeof(body.completed));
 	
 
 	if(body.hasOwnProperty('completed')){ 
@@ -241,6 +241,24 @@ app.put('/todos/:id', function(req,res){
 	});
 	// _.extend(matchedtodo,validAttributes);
 	// res.json(matchedtodo);
+
+});
+
+
+
+
+
+
+
+
+app.post('/user', function (req,res){
+	var body= _.pick(req.body,'email','password');
+	db.user.create(body).then(function(user){
+		 res.json(user.toJSON());
+		}, function (e){
+			
+			return res.status(400).json(e);
+	});	
 
 });
 
