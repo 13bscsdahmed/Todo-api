@@ -1,5 +1,6 @@
 var express=require('express');
 var app=express();
+var bcrypt= require('bcrypt');
 var PORT= process.env.PORT || 3000;
 var bodyParser= require('body-parser');
 var _= require('underscore');
@@ -262,7 +263,25 @@ app.post('/user', function (req,res){
 
 });
 
-db.sequelize.sync().then(function(){	//if force set to true db created everytime
+app.post('/user/login', function (req,res){
+	var body= _.pick(req.body,'email','password');
+
+	db.user.authenticate(body).then(function(user){
+		res.json(user.toPublicJSON());
+
+	},function( ){
+		res.status(401).send();
+
+	});
+
+
+});
+
+
+
+
+
+db.sequelize.sync({force:true}).then(function(){	//if force set to true db created everytime
 	app.listen(PORT,function(){
 	console.log('Express listening on PORT'+ PORT+'!');
 	});
